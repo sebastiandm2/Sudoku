@@ -1,0 +1,17 @@
+
+def printBoard(board):
+    for row in board:
+        print(row)
+
+def buildBoard(board):
+    for i in range(9):
+        for j in range(9):
+            #board[i][j] = 
+
+print("Welcome to Sudoku Player! Would you like to play a game or watch an automated game? ")
+userInput = input("Select 1 to play \nSelect 0 to watch \n")
+play = True
+
+board = [[0]*9 for i in range(9)]
+while(play):
+    printBoard(board)
