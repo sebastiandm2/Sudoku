@@ -47,10 +47,10 @@ def isRepeat(board, empty, num):
     row = empty[0]
     col = empty[1]
     for i in range(9): #checking if num is repeated in row
-        if board[row][i] == num:
+        if board[row][i] == num and i != col:
             return True
     for i in range(9): #checking if num is repeated in col
-        if board[i][col] == num:
+        if board[i][col] == num and i != row:
             return True
     if checkQuadrant(board, row, col, num): #checking if num is repeated in the quadrant
         return True
@@ -89,7 +89,7 @@ def copy(board): #creates a copy of a board
 
 def buildPlay(board): #builds playable board given a solution board
     count = 0
-    while count < 40: #removes numbers from 60 random cells
+    while count < 30: #removes numbers from 30 random cells
         i = randint(0,8)
         j = randint(0,8)
         if board[i][j] != "~":
@@ -106,15 +106,19 @@ def buildBinary(board): #builds a binary board to keep track of the given playab
                 binary[i][j] = 1 #1 if the player cannot edit cell value
     return binary
     
-def isFull(board):
+def isFull(board): #check if board is full
     for i in range(9):
         for j in range(9):
-            if board[i][j] == "~":
+            if board[i][j] == "~": #finds a blank spot => returns false
                 return False
     return True
 
-def didWin(board):
-    return False
+def didWin(board): #check if player has won
+    for i in range(9):
+        for j in range(9):
+            if isRepeat(board, (i, j), board[i][j]): #if is repeated => lose
+                return False
+    return True
 
 print("\nWelcome to Sudoku Player!\n") #print menu
 play = True
@@ -151,8 +155,12 @@ while(play):
         copy[y-1][x-1] = num #1 indexed
 
     if isFull(copy): #check if board is full
+        print("")
+        printBoard(copy)
         if didWin(copy): #print victory message
-            print("Congratulations! You have won! You are a genius!")
+            print("\nCongratulations! You have won! You are a genius!")
         else: #print defeat message
-            print("You lost. Stick to Checkers ...  and leave Sudoku to the real gamers :)")
+            print("\nYou lost. Keep trying!")
         break
+
+    print("")
